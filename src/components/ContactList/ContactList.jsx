@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { deliteReducer } from 'redux/Feedback/usersSlice';
 import { useMemo } from 'react';
-import { useState, useEffect } from 'react';
-const USERS_LOCALE_STORAGE_KEY = 'users';
 
 export const ContactList = () => {
   const contacts = useSelector(state => state.users.contacts);
