@@ -1,15 +1,17 @@
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { searchReducer } from 'redux/Feedback/usersSlice';
 
-export const Filter = ({ onChangeSearch, search }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.users.filter);
+  const handleChangeSearch = event => {
+    dispatch(searchReducer(event.target.value));
+  };
   return (
     <div>
       <form>
-        <input value={search} type="text" onChange={onChangeSearch} />
+        <input value={filter} type="text" onChange={handleChangeSearch} />
       </form>
     </div>
   );
-};
-Filter.propTypes = {
-  onChangeSearch: PropTypes.func.isRequired,
-  search: PropTypes.string.isRequired,
 };

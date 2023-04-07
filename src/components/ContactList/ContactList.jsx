@@ -1,23 +1,40 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { deliteReducer } from 'redux/Feedback/usersSlice';
+import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
+const USERS_LOCALE_STORAGE_KEY = 'users';
 
-export const ContactList = ({ contacts, onDeliteTodo }) => {
+export const ContactList = () => {
+  const contacts = useSelector(state => state.users.contacts);
+  console.log(contacts);
+  const search = useSelector(state => state.users.filter);
+  const dispatch = useDispatch();
+  const getFilteredContacts = useMemo(() => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [contacts, search]);
+  const deliteContacts = contactId => {
+    dispatch(deliteReducer(contactId));
+  };
   return (
     <div>
       <ul>
-        {contacts.map(({ name, number }) => (
+        {getFilteredContacts.map(({ name, number }) => (
           <li key={name}>
             <p>
               {name}: {number}
             </p>
-            <button onClick={() => onDeliteTodo(name)}>Delite</button>
+            <button
+              onClick={() => {
+                dispatch(deliteContacts(name));
+              }}
+            >
+              Delite
+            </button>
           </li>
         ))}
       </ul>
     </div>
   );
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  onDeliteTodo: PropTypes.string.isRequired,
 };
